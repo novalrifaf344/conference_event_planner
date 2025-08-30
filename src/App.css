@@ -1,131 +1,164 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ---------- Reset ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ---------- Theme ---------- */
+:root{
+  --primary:#05057a;   /* deep indigo */
+  --accent:#20f5e3;    /* Bright Turquoise */
+  --muted:#c9d4d3;
+
+  --hero-text:#ffffff;
+  --hero-sub:#eaf2f2;
+  --glass-bg:rgba(10,13,60,.62);
+  --glass-border:rgba(32,245,227,.25);
+  --shadow:0 14px 34px rgba(0,0,0,.3);
 }
 
-.first_page {
-  display: flex;
-  height: 100vh;
-  background-image: url("https://cdn.pixabay.com/photo/2018/07/05/14/45/conference-3518465_1280.jpg");
-  background-size: cover;
-  background-position: center;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  overflow: hidden; 
-  background-color: rgb(185, 186, 187);
-  /* position: relative; */
+/* ---------- HERO / INTRO (layout preserved) ---------- */
+.first_page{
+  position:relative;
+  min-height:100dvh;
+  display:grid;
+  place-items:center;
+  color:var(--hero-text);
+  overflow:hidden;
+  background:
+    linear-gradient(135deg, rgba(5,5,122,.92) 0%, rgba(5,5,122,.80) 55%, rgba(5,5,122,.68) 100%),
+    url("https://cdn.pixabay.com/photo/2018/07/05/14/45/conference-3518465_1280.jpg")
+    center/cover no-repeat;
+}
+.first_page::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(60% 60% at 18% 24%, rgba(32,245,227,.18) 0%, transparent 60%),
+    radial-gradient(48% 48% at 82% 30%, rgba(201,212,211,.12) 0%, transparent 60%);
+  pointer-events:none;
 }
 
-.first_page::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(10px);
+/* two-column grid (unchanged) */
+.main_event{
+  position:relative; z-index:1;
+  width:min(1200px,92vw);
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:clamp(24px,6vw,64px);
+  align-items:center;
+  padding:clamp(16px,4vw,32px);
 }
 
-.first_page h1 {
-  position: relative;
-  z-index: 1;
+/* Left column — title + CTA */
+.first_page_name_btn{
+  display:grid;
+  gap:clamp(16px,3vw,28px);
+  align-items:center;
+  justify-items:start;
+  max-width:680px;
 }
 
-.get-started-btn {
-  background-color:#EFC16B;
-  /* color: white; */
-  color: black;
-  border: none;
-  padding: 20px 40px;
-  font-size: 19px;
-  border-radius: 5px;
-  cursor: pointer;
+/* UNIFY BRAND COLOR HERE */
+.budget_heading{
+  color:var(--accent);               /* Bright Turquoise */
+  font-size:clamp(36px,6vw,68px);
+  line-height:1.08;
+  letter-spacing:.2px;
+  text-wrap:balance;
+  text-shadow:0 2px 8px rgba(0,0,0,.35);
 }
 
-.get-started-btn:hover {
-  background-color: #c1974a;
+.budget_sentence{
+  color:var(--hero-sub);
+  font-size:clamp(16px,2.2vw,22px);
+  opacity:.98;
+  text-shadow:0 1px 3px rgba(0,0,0,.25);
 }
 
-.getstarted_btn {
-  text-align: center;
-  font-size: 30px;
+/* CTA button — Bright Turquoise, elegant shape */
+.getstarted_btn{ margin-top:6px; }
+.get-started-btn{
+  background:var(--accent);
+  color:#042a2e;
+  border:0;
+  padding:14px 24px;
+  font-size:clamp(14px,1.8vw,16px);
+  border-radius:14px;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:transform .05s ease, filter .2s ease, box-shadow .2s ease;
+}
+.get-started-btn:hover{ filter:brightness(.98); }
+.get-started-btn:active{ transform:translateY(1px); }
+.get-started-btn:focus-visible{ outline:3px solid rgba(32,245,227,.55); outline-offset:2px; }
+
+/* Right column — glass card */
+.aboutus_main{
+  width:100%;
+  max-width:640px;
+  color:#f5fbff;
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  padding:clamp(16px,3.5vw,28px);
+  box-shadow:var(--shadow);
+}
+.aboutus_container{
+  display:grid;
+  gap:clamp(12px,2.4vw,20px);
+  text-align:left;
+}
+.aboutus_container p{
+  font-size:clamp(15px,1.9vw,18px);
+  line-height:1.6;
+  color:#eef6ff;
+  font-weight:500;
 }
 
-.main_event {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(7px);
-  gap: 100px;
-  background-color: rgba(51, 61, 80, 0.7);
+/* ---------- Planner container (slides on desktop) ---------- */
+.event-list-container{
+  position:absolute;
+  top:100dvh; left:0;
+  width:100%;
+  min-height:100dvh;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  transition:top .5s ease;
+  z-index:2;
+  overflow-y:auto;
+}
+.event-list-container.visible{ top:0; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:1024px){
+  .main_event{ grid-template-columns:1fr; }
+  .aboutus_main{ justify-self:stretch; }
 }
 
-.aboutus_main {
-  width: 800px;
-  color: white;
-  /* background-color: rgba(0,0,0,0.1); */
+/* On small screens:
+   1) Prevent hero content from being cut by making the glass card scrollable
+   2) Let the planner flow normally below the hero (no overlay) */
+@media (max-width:640px){
+  .first_page{ background-position:center top; }
+  .aboutus_main{
+    max-height:62vh;              /* keeps hero within viewport */
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .main_event{ gap:20px; }
 
+  /* planner flows under hero to avoid clipping */
+  .event-list-container{
+    position:static;
+    top:auto;
+    min-height:auto;
+    background:#ffffff;           /* solid behind content on mobile */
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+  }
+  .event-list-container.visible{ top:auto; }
 }
 
-.aboutus_container {
-  font-size: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  text-align: justify;
-}
-
-.aboutus_container p {
-  font-size: 23px;
-  font-weight: 700;
-  
-
-}
-
-.first_page_name_btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  width: 500px;
-}
-
-.first_page_name_btn h1 {
-  font-size: 45px;
-  text-align: center;
-}
-
-.first_page_name_btn p {
-  font-size: 26px;
-}
-
-.event-list-container {
-  position: absolute;
-  overflow-x: hidden;
-  top: 100vh;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(255, 255, 255, 0.8);
-  transition: top 0.5s ease;
-  overflow-y: auto;
-  z-index: 2;
-  backdrop-filter: blur(5px);
-}
-
-.event-list-container.visible {
-  top: 0;
-}
-
-.budget_heading {
-  font-size: 40px;
-}
-
-.budget_sentence {
-  font-size: 29px;
-}
+/* smooth scroll */
+html{ scroll-behavior:smooth; }
